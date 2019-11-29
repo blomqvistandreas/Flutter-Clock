@@ -15,16 +15,16 @@ enum _Element {
 }
 
 final _lightTheme = {
-  _Element.background: Color(0xFF81B3FE),
+  _Element.background: Colors.transparent,
   _Element.text: Colors.white,
-  _Element.shadow: Colors.black,
+  _Element.shadow: Colors.transparent,
 };
 
 final _darkTheme = {
-  _Element.background: Colors.black,
+  _Element.background: Colors.transparent,
   _Element.text: Colors.white,
-  _Element.shadow: Color(0xFF174EA6),
-};
+  _Element.shadow: Colors.transparent,
+};  
 
 /// A basic digital clock.
 ///
@@ -73,9 +73,17 @@ class _DigitalClockState extends State<DigitalClock> {
     });
   }
 
+  int pictureSelected = 0;
+  void updatePicture() {
+    setState(() {
+      pictureSelected++;
+    });
+  }
+
   void _updateTime() {
     setState(() {
       _dateTime = DateTime.now();
+
       // Update once per minute. If you want to update every second, use the
       // following code.
       _timer = Timer(
@@ -101,8 +109,9 @@ class _DigitalClockState extends State<DigitalClock> {
     final hour =
         DateFormat(widget.model.is24HourFormat ? 'HH' : 'hh').format(_dateTime);
     final minute = DateFormat('mm').format(_dateTime);
-    final fontSize = MediaQuery.of(context).size.width / 3.5;
+    final fontSize = MediaQuery.of(context).size.width / 10.5;
     final offset = -fontSize / 7;
+    
     final defaultStyle = TextStyle(
       color: colors[_Element.text],
       fontFamily: 'PressStart2P',
@@ -121,12 +130,32 @@ class _DigitalClockState extends State<DigitalClock> {
       child: Center(
         child: DefaultTextStyle(
           style: defaultStyle,
-          child: Stack(
+          child: Column(children: <Widget>[
+            Row(
             children: <Widget>[
-              Positioned(left: offset, top: 0, child: Text(hour)),
-              Positioned(right: offset, bottom: offset, child: Text(minute)),
+               Image.asset(
+                 "assets/"+hour[0]+".gif",
+                 height: 75,
+                 width: 75,
+               ),
+               Image.asset(
+                 "assets/"+hour[1]+".gif",
+                 height: 75,
+                 width: 75,
+               ),
+               Image.asset(
+                 "assets/"+minute[0]+".gif",
+                 height: 75,
+                 width: 75,
+               ),
+               Image.asset(
+                 "assets/"+minute[1]+".gif",
+                 height: 75,
+                 width: 75,
+               ),
             ],
           ),
+          ],)
         ),
       ),
     );
